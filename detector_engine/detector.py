@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import supervision as sv
 import time
 
-model = YOLO("models/best_ref_ncnn_model")
+model = YOLO("models/best_model/bestv7.pt")
 label_annotator = sv.LabelAnnotator(text_position=sv.Position.TOP_LEFT)
 box_annotator = sv.BoxAnnotator()
 

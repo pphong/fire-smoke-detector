@@ -6,7 +6,7 @@ from detector_engine.detector import detect_and_annotate
 from detector_engine.notification_alert import send_telegram_video
 from detector_engine.utils import save_clip
 import json
-from detector_engine.streaming import RTMPStreamer
+# from detector_engine.streaming import RTMPStreamer
 
 SEND_INTERVAL = 30
 CLIP_BEFORE = 5
@@ -28,15 +28,15 @@ last_sent_time = 0
 last_detected_time = 0
 ready_clip = False
 
-streamer = RTMPStreamer(
-    rtmp_url="rtmp://localhost/live/stream",
-    width=FRAME_WIDTH,
-    height=FRAME_HEIGHT,
-    fps=VIDEO_FPS
-)
+# streamer = RTMPStreamer(
+#     rtmp_url="rtmp://localhost/live/stream",
+#     width=FRAME_WIDTH,
+#     height=FRAME_HEIGHT,
+#     fps=VIDEO_FPS
+# )
 
 def save_clip_and_send(pre_frames, post_frames):
-    filename = f"alert_{int(time.time())}.mp4"
+    filename = f"tmp/alert_{int(time.time())}.mp4"
     save_clip(filename, pre_frames, post_frames, FRAME_WIDTH, FRAME_HEIGHT, VIDEO_FPS)
     send_telegram_video(filename)
     buffer_after.clear()
@@ -75,9 +75,10 @@ while True:
             daemon=True
         ).start()
 
+
     cv2.putText(annotated_frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    # cv2.imshow("NCNN Detection", annotated_frame)
-    streamer.send_frame(annotated_frame)
+    cv2.imshow("NCNN Detection", annotated_frame)
+    # streamer.send_frame(annotated_frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 cap.release()
