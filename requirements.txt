@@ -7,3 +7,4 @@ ncnn
 keyboard
 playsound
 numpy
+pynput

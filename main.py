@@ -6,7 +6,7 @@ from detector_engine.detector import detect_and_annotate
 from detector_engine.notification_alert import send_telegram_video
 from detector_engine.utils import save_clip
 import json
-import keyboard
+from pynput import keyboard
 import sys
 import numpy as np
 from playsound import playsound
@@ -14,7 +14,7 @@ from playsound import playsound
 # from detector_engine.streaming import RTMPStreamer
 
 SEND_INTERVAL = 30
-SIREN_INTERVAL = 15
+SIREN_INTERVAL = 5
 CLIP_BEFORE = 5
 CLIP_AFTER = 5
 VIDEO_FPS = 20
@@ -44,6 +44,22 @@ last_alert_time = 0
 #     fps=VIDEO_FPS
 # )
 
+stop_flag = False
+
+def on_press(key):
+    global stop_flag
+    try:
+        if key.char == 'q':
+            print("Q pressed. Exiting...")
+            stop_flag = True
+            return False # Stop listener
+        return None
+    except AttributeError:
+        return None
+
+listener = keyboard.Listener(on_press=on_press)
+listener.start()
+
 def save_clip_and_send(pre_frames, post_frames):
     filename = f"tmp/alert_{int(time.time())}.mp4"
     save_clip(filename, pre_frames, post_frames, FRAME_WIDTH, FRAME_HEIGHT, VIDEO_FPS)
@@ -55,10 +71,10 @@ def play_sound(is_fire):
         playsound("./sound/fire.wav")
     else:
         playsound("./sound/beep.wav")
-while True:
-    if keyboard.is_pressed('q'):
-        print("Q pressed, quitting...")
-        sys.exit(0)
+while not stop_flag:
+    # if keyboard.is_pressed('q'):
+    #     print("Q pressed, quitting...")
+    #     sys.exit(0)
     ret, frame = cap.read()
     if not ret:
         if isinstance(source, str):
@@ -109,3 +125,6 @@ while True:
             break
 cap.release()
 cv2.destroyAllWindows()
+listener.join()
+print("Exited cleanly.")
+exit(0)
