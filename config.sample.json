@@ -1,5 +1,7 @@
 {
     "telegram_bot_token": "ID:TOKEN",
     "telegram_chat_id": "chatId",
-    "rtsp": "rtsp://user:pwd@IP:PORT/Streaming/Channels/101?transportmode=unicast&profile=Profile_1"
+    "rtsp": "rtsp://user:pwd@IP:PORT/Streaming/Channels/101?transportmode=unicast&profile=Profile_1",
+    "model_path": "models/best_model_v8/best_v8_ncnn_model",
+    "confidence": 0.7
 }
