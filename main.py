@@ -46,19 +46,15 @@ last_alert_time = 0
 
 stop_flag = False
 
-def on_press(key):
+def wait_for_q():
     global stop_flag
-    try:
-        if key.char == 'q':
-            print("Q pressed. Exiting...")
+    while True:
+        user_input = input("--- Press 'q' + Enter to stop ---\n")
+        if user_input.strip().lower() == 'q':
             stop_flag = True
-            return False # Stop listener
-        return None
-    except AttributeError:
-        return None
+            break
 
-listener = keyboard.Listener(on_press=on_press)
-listener.start()
+threading.Thread(target=wait_for_q, daemon=True).start()
 
 def save_clip_and_send(pre_frames, post_frames):
     filename = f"tmp/alert_{int(time.time())}.mp4"
@@ -125,6 +121,4 @@ while not stop_flag:
             break
 cap.release()
 cv2.destroyAllWindows()
-listener.join()
-print("Exited cleanly.")
 exit(0)
