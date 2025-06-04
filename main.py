@@ -7,7 +7,8 @@ from detector_engine.notification_alert import send_telegram_video
 from detector_engine.utils import save_clip
 import json
 import numpy as np
-from playsound import playsound
+import os
+import platform
 
 # from detector_engine.streaming import RTMPStreamer
 
@@ -62,9 +63,19 @@ def save_clip_and_send(pre_frames, post_frames):
 
 def play_sound(is_fire):
     if is_fire:
-        playsound("./sound/fire.wav")
+        path = "./sound/fire.wav"
     else:
-        playsound("./sound/beep.wav")
+        path = "./sound/beep.wav"
+    system = platform.system()
+    if system == "Windows":
+        from playsound import playsound
+        playsound(path)
+    elif system == "Darwin":  # macOS
+        os.system(f"afplay {path}")
+    elif system == "Linux":
+        os.system(f"aplay {path}")
+    else:
+        print(f"Unsupported OS: {system}")
 while not stop_flag:
     # if keyboard.is_pressed('q'):
     #     print("Q pressed, quitting...")

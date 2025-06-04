@@ -24,3 +24,8 @@ if [ -f "requirements.txt" ]; then
 else
     echo "requirements.txt not found!"
 fi
+
+#==== Other packages
+# for playsound:
+# sudo apt install alsa-utils
+
