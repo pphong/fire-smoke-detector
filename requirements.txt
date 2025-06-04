@@ -4,7 +4,6 @@ supervision
 requests
 onvif-zeep
 ncnn
-keyboard
 playsound
 numpy
 pynput

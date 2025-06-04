@@ -6,8 +6,6 @@ from detector_engine.detector import detect_and_annotate
 from detector_engine.notification_alert import send_telegram_video
 from detector_engine.utils import save_clip
 import json
-from pynput import keyboard
-import sys
 import numpy as np
 from playsound import playsound
 
